@@ -1,0 +1,38 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "a simple ecommerce",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "eslint --fix src"
+  },
+  "keywords": [
+    "ecommerce"
+  ],
+  "author": "labi",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^6.0.5",
+    "express-session": "^1.17.2",
+    "helmet": "^4.6.0",
+    "mongoose": "^6.1.5",
+    "mysql2": "^2.3.2",
+    "uuid": "^8.3.2"
+  }
+}

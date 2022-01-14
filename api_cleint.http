@@ -1,0 +1,15 @@
+POST  http://localhost:3000/signup
+Content-Type: application/json
+
+{
+    "name":"tesdjgvtehr",
+    "email":"@gmdailhggg.com",
+    "password":"wdeghgghll"
+}
+
+###
+
+GET http://localhost:3000/form
+###
+
+POST http://localhost:3000/process
