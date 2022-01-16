@@ -1,57 +1,41 @@
-const mongoose = require('mongoose');
-const crypto = require('crypto');
-const { v4: uuidv4 } = require('uuid');
+const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
+const sequelize = require('../../configs/db');
 
-const userSchema = new mongoose.Schema({
+const User = sequelize.define('user', {
+  id: {
+    primaryKey: true,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+  },
   name: {
-    type: String,
-    trim: true,
-    required: true,
-    maxlength: 32,
+    type: Sequelize.STRING,
+    allowNull: false,
   },
   email: {
-    type: String,
-    trim: true,
-    required: true,
-    unique: 32,
-  },
-  hashed_password: {
-    type: String,
-    required: true,
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
   },
   about: {
-    type: String,
-    trim: true,
+    type: Sequelize.STRING,
   },
-  salt: String,
   role: {
-    type: Number,
-    default: 0,
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
   },
-  history: {
-    type: Array,
-    default: [],
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    set(value) {
+      const hash = bcrypt.hashSync(value, 10);
+      this.setDataValue('password', hash);
+      console.log(hash);
+    },
   },
-}, { timestamps: true });
-
-userSchema.virtual('password').set(function (password) {
-  this._password = password;
-  this.salt = uuidv4();
-  this.hashed_password = this.encryptPassword(password);
-})
-  .get(function () {
-    return this._password;
-  });
-
-userSchema.methods = {
-  encryptPassword(password) {
-    if (!password) return '';
-    try {
-      return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
-    } catch (err) {
-      return '';
-    }
+  salt: {
+    type: Sequelize.STRING,
   },
-};
+});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = (User);

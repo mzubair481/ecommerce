@@ -1,5 +1,4 @@
 /* eslint-disable linebreak-style */
-
 const User = require('../models/user');
 
 exports.signUp = (req, res) => {
@@ -14,5 +13,6 @@ exports.signUp = (req, res) => {
     res.json({
       user,
     });
+    return user;
   });
 };

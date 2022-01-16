@@ -1,15 +1,15 @@
+const express = require('express');
 const cookieParser = require('cookie-parser');
 const csrf = require('csurf');
 const bodyParser = require('body-parser');
-const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const mongoose = require('mongoose');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const morgan = require('morgan');
+const limiter = require('./api/middlewares/rateLimiter');
+const sequelize = require('./configs/db');
 require('dotenv').config();
 
 const userRoutes = require('./api/routes/user');
+const user = require('./api/models/user');
 
 const csrfProtection = csrf({ cookie: true, maxAge: 60 * 60 * 8 });
 const parseForm = bodyParser.urlencoded({ extended: false });
@@ -20,20 +20,23 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
-// app.use(morgan);
+app.use(limiter);
+
+sequelize.authenticate().then(() => {
+  sequelize.sync({ force: true }).then(() => {
+    user.create({
+      name: 'tester',
+      email: 'test@gmailcom',
+      password: 'test',
+    });
+  });
+}).catch((err) => {
+  console.log('error', err);
+});
 
 app.use(userRoutes);
 
 const port = process.env.PORT;
-
-mongoose.connect(process.env.DB, {
-  useNewUrlParser: true,
-  // eslint-disable-next-line comma-dangle
-  useUnifiedTopology: true
-}).then(() => console.log('db connected'))
-  .catch((err) => {
-    console.log(err);
-  });
 
 app.get('/form', csrfProtection, (req, res) => {
   res.send({ csrfToken: req.csrfToken() });
