@@ -26,7 +26,7 @@ sequelize.authenticate().then(() => {
   sequelize.sync({ force: true }).then(() => {
     user.create({
       name: 'tester',
-      email: 'test@gmailcom',
+      email: 'test@gmail.com',
       password: 'test',
     });
   });
