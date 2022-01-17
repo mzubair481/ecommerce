@@ -9,7 +9,7 @@ const sequelize = require('./configs/db');
 require('dotenv').config();
 
 const userRoutes = require('./api/routes/user');
-const user = require('./api/models/user');
+const User = require('./api/models/user.model');
 
 const csrfProtection = csrf({ cookie: true, maxAge: 60 * 60 * 8 });
 const parseForm = bodyParser.urlencoded({ extended: false });
@@ -24,19 +24,19 @@ app.use(limiter);
 
 sequelize.authenticate().then(() => {
   sequelize.sync({ force: true }).then(() => {
-    user.create({
+    User.create({
       name: 'tester',
       email: 'test@gmail.com',
       password: 'test',
     });
-  });
+  }).catch((err) => console.log(err));
 }).catch((err) => {
   console.log('error', err);
 });
 
 app.use(userRoutes);
 
-const port = process.env.PORT;
+const port = process.env.SERVER_PORT;
 
 app.get('/form', csrfProtection, (req, res) => {
   res.send({ csrfToken: req.csrfToken() });
