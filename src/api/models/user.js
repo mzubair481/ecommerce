@@ -33,9 +33,6 @@ const User = sequelize.define('user', {
       console.log(hash);
     },
   },
-  salt: {
-    type: Sequelize.STRING,
-  },
 });
 
 module.exports = (User);
