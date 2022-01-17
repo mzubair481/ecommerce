@@ -1,18 +1,11 @@
 /* eslint-disable linebreak-style */
 const User = require('../models/user.model');
 
-exports.signUp = (req, res) => {
-  console.log('result', req.body);
-  const user = new User(req.body);
-  user.save((err) => {
-    if (err) {
-      return res.status(400).json({
-        err,
-      });
-    }
-    res.status(200).json({
-      user,
-    });
-    return user;
-  });
+exports.signUp = async (req, res) => {
+  try {
+    const record = await User.create(req.body);
+    return res.status(200).json({ record, msg: 'Success' });
+  } catch (error) {
+    return res.status(409).json({ error, msg: 'fail' });
+  }
 };
