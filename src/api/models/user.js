@@ -15,12 +15,9 @@ const User = sequelize.define('user', {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-    validate: {
-      isEmail: true,
-    },
     unique: {
       args: true,
-      msq: 'Email already in use',
+      msg: 'Email already in use',
     },
   },
   about: {
