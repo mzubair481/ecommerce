@@ -31,6 +31,7 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
     set(value) {
+      // deepcode ignore HardcodedSecret
       const hash = bcrypt.hashSync(value, 10);
       this.setDataValue('password', hash);
       console.log(hash);
